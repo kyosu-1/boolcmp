@@ -1,4 +1,4 @@
-# judgebool
+# boolcmp
 
 The boolcmp tool is a static analysis tool for Go that detects variables with bool values that use comparison operators, and reports them as potentially simplifiable. 
 
