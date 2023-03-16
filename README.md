@@ -8,7 +8,6 @@ The boolcmp tool is a static analysis tool for Go that detects variables with bo
 $ go install github.com/kyosu-1/boolcmp
 ```
 
-
 # Usage
 
 ```
