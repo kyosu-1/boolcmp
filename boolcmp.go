@@ -1,4 +1,4 @@
-package judgebool
+package boolcmp
 
 import (
 	"go/ast"
@@ -7,11 +7,11 @@ import (
 	"golang.org/x/tools/go/analysis"
 )
 
-const doc = "judgebool is ..."
+const doc = "boolcmp is ..."
 
 // Analyzer is ...
 var Analyzer = &analysis.Analyzer{
-	Name:     "judgebool",
+	Name:     "boolcmp",
 	Doc:      doc,
 	Run:      run,
 	Requires: []*analysis.Analyzer{},

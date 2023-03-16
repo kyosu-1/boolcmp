@@ -1,4 +1,4 @@
-module github.com/kyosu-1/judgebool
+module github.com/kyosu-1/boolcmp
 
 go 1.20
 
