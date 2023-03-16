@@ -41,7 +41,7 @@ func run(pass *analysis.Pass) (any, error) {
 
 func isComparison(op token.Token) bool {
 	switch op {
-	case token.EQL, token.NEQ, token.LSS, token.LEQ, token.GTR, token.GEQ:
+	case token.EQL, token.NEQ:
 		return true
 	default:
 		return false
