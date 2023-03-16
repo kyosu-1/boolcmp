@@ -20,4 +20,12 @@ func f() {
 	if !isDisabled { // ok
 		// do something else
 	}
+
+	if isOpen == isClosed { // want "bool value used in comparison"
+		// do something else
+	}
+
+	if true == isOpen { // want "bool value used in comparison"
+		// do something else
+	}
 }
