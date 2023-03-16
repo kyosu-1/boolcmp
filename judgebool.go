@@ -2,39 +2,48 @@ package judgebool
 
 import (
 	"go/ast"
+	"go/token"
 
 	"golang.org/x/tools/go/analysis"
-	"golang.org/x/tools/go/analysis/passes/inspect"
-	"golang.org/x/tools/go/ast/inspector"
 )
 
 const doc = "judgebool is ..."
 
 // Analyzer is ...
 var Analyzer = &analysis.Analyzer{
-	Name: "judgebool",
-	Doc:  doc,
-	Run:  run,
-	Requires: []*analysis.Analyzer{
-		inspect.Analyzer,
-	},
+	Name:     "judgebool",
+	Doc:      doc,
+	Run:      run,
+	Requires: []*analysis.Analyzer{},
 }
 
 func run(pass *analysis.Pass) (any, error) {
-	inspect := pass.ResultOf[inspect.Analyzer].(*inspector.Inspector)
-
-	nodeFilter := []ast.Node{
-		(*ast.Ident)(nil),
-	}
-
-	inspect.Preorder(nodeFilter, func(n ast.Node) {
-		switch n := n.(type) {
-		case *ast.Ident:
-			if n.Name == "gopher" {
-				pass.Reportf(n.Pos(), "identifier is gopher")
+	for _, f := range pass.Files {
+		ast.Inspect(f, func(n ast.Node) bool {
+			if n == nil {
+				return false
 			}
-		}
-	})
-
+			switch x := n.(type) {
+			case *ast.BinaryExpr:
+				if isComparison(x.Op) {
+					if lhs := pass.TypesInfo.Types[x.X].Type; lhs != nil {
+						if lhs.Underlying().String() == "bool" {
+							pass.Reportf(x.Pos(), "bool value used in comparison")
+						}
+					}
+				}
+			}
+			return true
+		})
+	}
 	return nil, nil
+}
+
+func isComparison(op token.Token) bool {
+	switch op {
+	case token.EQL, token.NEQ, token.LSS, token.LEQ, token.GTR, token.GEQ:
+		return true
+	default:
+		return false
+	}
 }
